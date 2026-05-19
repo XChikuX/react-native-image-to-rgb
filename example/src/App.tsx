@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { StyleSheet, View, Text, Button, Image, TextInput } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { convertToRGB } from 'react-native-image-to-rgb';
+import { convertImage } from 'react-native-ai-image';
 
 type ImageRes = {
   uri: string;
@@ -36,10 +36,19 @@ export default function App() {
         setResult(undefined);
         setGenTime(undefined);
         const handleStartTime = performance.now();
-        const rgbArray = await convertToRGB(uriString);
+        const conversion = await convertImage(uriString, {
+          width: 640,
+          height: 640,
+          dataType: 'float32',
+          channelLayout: 'chw',
+          resizeMode: 'letterbox',
+          normalization: 'yolo',
+        });
         const detectionEndTime = performance.now(); // End timing after model detection
         const duration = detectionEndTime - handleStartTime; // Calculate the full duration
-        setResult(rgbArray.length.toString());
+        setResult(
+          `${conversion.width}x${conversion.height}x${conversion.channels} • ${conversion.data.byteLength} bytes`
+        );
         setGenTime(duration.toFixed(2).toString());
       } catch (e) {
         console.error('error', e);
@@ -71,15 +80,15 @@ export default function App() {
         style={styles.input}
         onChangeText={(text) => setInputVal(text)}
       />
-      <Button title="use photo from form" onPress={usePhotoFromTextInput} />
+      <Button title="Use photo from form" onPress={usePhotoFromTextInput} />
       {uri ? <Image source={{ uri }} style={styles.box} /> : null}
       {imageRes ? (
         <Text>
           Image resolution: {imageRes.width}x{imageRes.height}
         </Text>
       ) : null}
-      {uri && result ? <Text>Generated RGB array length: {result}</Text> : null}
-      {uri && genTime ? <Text>Generated in: {genTime}ms</Text> : null}
+        {uri && result ? <Text>Generated tensor: {result}</Text> : null}
+        {uri && genTime ? <Text>Generated in: {genTime}ms</Text> : null}
     </View>
   );
 }

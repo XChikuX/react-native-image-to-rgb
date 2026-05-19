@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "react-native-image-to-rgb",
+      "name": "react-native-ai-image",
       "devDependencies": {
         "@react-native/eslint-config": "^0.74.0",
         "@types/jest": "^29.5.12",

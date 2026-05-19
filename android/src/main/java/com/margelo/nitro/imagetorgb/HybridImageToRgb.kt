@@ -145,13 +145,13 @@ class HybridImageToRgb : HybridImageToRgbSpec() {
       inPremultiplied = false
     }
     return BitmapFactory.decodeByteArray(bytes, 0, bytes.size, opts)
-      ?: throw RuntimeException("[react-native-image-to-rgb] Failed to decode image at: $uri")
+      ?: throw RuntimeException("[react-native-ai-image] Failed to decode image at: $uri")
   }
 
   private fun loadBytes(uri: String): ByteArray {
     if (uri.startsWith("data:")) {
       val commaIdx = uri.indexOf(',')
-      require(commaIdx > 0) { "[react-native-image-to-rgb] Malformed data: URI" }
+      require(commaIdx > 0) { "[react-native-ai-image] Malformed data: URI" }
       val header = uri.substring(0, commaIdx)
       val payload = uri.substring(commaIdx + 1)
       return if (header.contains(";base64", ignoreCase = true)) {
@@ -173,14 +173,14 @@ class HybridImageToRgb : HybridImageToRgbSpec() {
     }
     if (uri.startsWith("content://") || uri.startsWith("android.resource://")) {
       val ctx = NitroModules.applicationContext
-        ?: throw RuntimeException("[react-native-image-to-rgb] No Android context available for content:// URI")
+        ?: throw RuntimeException("[react-native-ai-image] No Android context available for content:// URI")
       ctx.contentResolver.openInputStream(Uri.parse(uri))?.use { return readAllBytes(it) }
-        ?: throw RuntimeException("[react-native-image-to-rgb] Could not open content URI: $uri")
+        ?: throw RuntimeException("[react-native-ai-image] Could not open content URI: $uri")
     }
     val path = if (uri.startsWith("file://")) Uri.parse(uri).path ?: uri.removePrefix("file://") else uri
     val file = java.io.File(path)
     if (!file.exists()) {
-      throw RuntimeException("[react-native-image-to-rgb] File does not exist: $path")
+      throw RuntimeException("[react-native-ai-image] File does not exist: $path")
     }
     return file.readBytes()
   }
@@ -237,7 +237,7 @@ class HybridImageToRgb : HybridImageToRgbSpec() {
     return when (n) {
       0, 90, 180, 270 -> n
       else -> throw IllegalArgumentException(
-        "[react-native-image-to-rgb] rotation must be 0, 90, 180, or 270 (got $r)"
+        "[react-native-ai-image] rotation must be 0, 90, 180, or 270 (got $r)"
       )
     }
   }

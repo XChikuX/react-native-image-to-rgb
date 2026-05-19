@@ -1,11 +1,13 @@
-# react-native-image-to-rgb
+# react-native-ai-image
 
-> Fast, zero-copy image → RGB tensor conversion for React Native, built on [**Nitro Modules**](https://github.com/mrousavy/nitro). Strong, opinionated defaults for **darknet/YOLOv4** and **TFLite** pipelines.
+> AI-ready image preprocessing for React Native, built on [**Nitro Modules**](https://github.com/mrousavy/nitro). Zero-copy image → tensor conversion with strong defaults for **darknet/YOLOv4** and **TFLite** pipelines.
 
-[![version](https://img.shields.io/npm/v/react-native-image-to-rgb.svg)](https://www.npmjs.com/package/react-native-image-to-rgb)
-[![license](https://img.shields.io/npm/l/react-native-image-to-rgb.svg)](https://github.com/XChikuX/react-native-image-to-rgb/blob/main/LICENSE)
+[![version](https://img.shields.io/npm/v/react-native-ai-image.svg)](https://www.npmjs.com/package/react-native-ai-image)
+[![license](https://img.shields.io/npm/l/react-native-ai-image.svg)](https://github.com/XChikuX/react-native-image-to-rgb/blob/main/LICENSE)
 
-`react-native-image-to-rgb` decodes an image, applies EXIF orientation, optionally crops/rotates, resizes it (`stretch` / `cover` / `contain` / **`letterbox`**), and packs the pixels into a tightly-laid-out `ArrayBuffer` ready to feed to TFLite, ONNX, CoreML, or darknet/YOLO models — **without ever materialising a JS `number[]`**.
+`react-native-ai-image` decodes an image, applies EXIF orientation, optionally crops/rotates, resizes it (`stretch` / `cover` / `contain` / **`letterbox`**), and packs the pixels into a tightly-laid-out `ArrayBuffer` ready to feed to TFLite, ONNX, CoreML, or darknet/YOLO models — **without ever materialising a JS `number[]`**.
+
+> Published as `react-native-ai-image` to clearly distinguish the Nitro rewrite from the legacy `react-native-image-to-rgb` package line.
 
 Why care?
 
@@ -19,8 +21,8 @@ Why care?
 ## Installation
 
 ```sh
-bun add react-native-image-to-rgb react-native-nitro-modules
-# or: yarn add / npm i — they all work
+npm i react-native-ai-image react-native-nitro-modules
+# or: yarn add / bun add — they all work
 cd ios && pod install
 ```
 
@@ -33,20 +35,19 @@ The library requires React Native **0.71+**, iOS **13+**, Android **API 24+**.
 ## Quickstart
 
 ```ts
-import { convertImage, asTypedArray } from 'react-native-image-to-rgb'
+import { convertImage, asTypedArray } from 'react-native-ai-image'
 
-const { data, width, height, contentX, contentY, contentWidth, contentHeight } =
-  await convertImage(uri, {
-    width: 640,
-    height: 640,
-    pixelFormat: 'rgb',
-    dataType: 'float32',
-    channelLayout: 'chw',
-    resizeMode: 'letterbox',     // YOLO-style aspect-preserving resize
-    normalization: 'yolo',       // == { mean: 0, std: 255 }
-  })
+const result = await convertImage(uri, {
+  width: 640,
+  height: 640,
+  pixelFormat: 'rgb',
+  dataType: 'float32',
+  channelLayout: 'chw',
+  resizeMode: 'letterbox',     // YOLO-style aspect-preserving resize
+  normalization: 'yolo',       // == { mean: 0, std: 255 }
+})
 
-const tensor = asTypedArray({ ...result, data })  // Float32Array view
+const tensor = asTypedArray(result)  // Float32Array view
 const detections = await yolo.run([tensor.buffer])
 ```
 
@@ -138,7 +139,7 @@ await toTFLiteInput(uri, { size: 224, dataType: 'float32', normalization: 'image
 ### Typed-array helpers
 
 ```ts
-import { asTypedArray, bytesPerSample, channelsFor } from 'react-native-image-to-rgb'
+import { asTypedArray, bytesPerSample, channelsFor } from 'react-native-ai-image'
 
 const view = asTypedArray(result)
 // → Uint8Array | Int8Array | Uint16Array | Float32Array
@@ -157,7 +158,7 @@ Drop-in replacement for the v0.1.x API that returns a plain `number[]` of interl
 ### YOLOv4 (darknet) with [`react-native-fast-tflite`](https://github.com/mrousavy/react-native-fast-tflite)
 
 ```ts
-import { toYoloInput } from 'react-native-image-to-rgb'
+import { toYoloInput } from 'react-native-ai-image'
 
 const yolo = await loadTensorflowModel(require('./yolov4-416.tflite'))
 
@@ -172,7 +173,7 @@ const sy = (y: number) => (y - input.contentY) * input.sourceHeight / input.cont
 ### TFLite MobileNetV2 float
 
 ```ts
-import { toTFLiteInput, asTypedArray } from 'react-native-image-to-rgb'
+import { toTFLiteInput, asTypedArray } from 'react-native-ai-image'
 
 const m = await loadTensorflowModel(require('./mobilenet_v2_1.0_224.tflite'))
 
@@ -254,7 +255,7 @@ bun test
 
 ## Credits
 
-Built on top of [Marc Rousavy](https://github.com/mrousavy)'s [Nitro Modules](https://github.com/mrousavy/nitro). Originally inspired by, and a complete rewrite of, the v0.1.x version of `react-native-image-to-rgb`.
+Built on top of [Marc Rousavy](https://github.com/mrousavy)'s [Nitro Modules](https://github.com/mrousavy/nitro). Published as `react-native-ai-image`, and originally inspired by the legacy `react-native-image-to-rgb` package.
 
 ## License
 

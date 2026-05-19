@@ -1,6 +1,6 @@
 //
 //  HybridImageToRgb.swift
-//  react-native-image-to-rgb
+//  react-native-ai-image
 //
 //  Swift implementation of the `ImageToRgb` Nitro HybridObject.
 //
@@ -40,7 +40,7 @@ final class HybridImageToRgb: HybridImageToRgbSpec {
     // 2. Honor EXIF orientation → normalised, upright RGBA8 pixel buffer
     let ignoreExif = options.ignoreExif ?? false
     guard let cgImage = decodeCGImage(data: data, applyExif: !ignoreExif) else {
-      throw RuntimeError.error(withMessage: "[react-native-image-to-rgb] Failed to decode image at: \(uri)")
+      throw RuntimeError.error(withMessage: "[react-native-ai-image] Failed to decode image at: \(uri)")
     }
 
     // 3. Apply explicit rotation on top
@@ -120,13 +120,13 @@ final class HybridImageToRgb: HybridImageToRgbSpec {
   private static func loadData(uri: String) throws -> Data {
     if uri.hasPrefix("data:") {
       guard let commaIdx = uri.firstIndex(of: ",") else {
-        throw RuntimeError.error(withMessage: "[react-native-image-to-rgb] Malformed data: URI")
+        throw RuntimeError.error(withMessage: "[react-native-ai-image] Malformed data: URI")
       }
       let header = String(uri[..<commaIdx])
       let payload = String(uri[uri.index(after: commaIdx)...])
       if header.lowercased().contains(";base64") {
         guard let decoded = Data(base64Encoded: payload, options: .ignoreUnknownCharacters) else {
-          throw RuntimeError.error(withMessage: "[react-native-image-to-rgb] Invalid base64 data URI")
+          throw RuntimeError.error(withMessage: "[react-native-ai-image] Invalid base64 data URI")
         }
         return decoded
       } else {
@@ -136,7 +136,7 @@ final class HybridImageToRgb: HybridImageToRgbSpec {
     }
     if uri.hasPrefix("http://") || uri.hasPrefix("https://") {
       guard let url = URL(string: uri) else {
-        throw RuntimeError.error(withMessage: "[react-native-image-to-rgb] Invalid http(s) URL: \(uri)")
+        throw RuntimeError.error(withMessage: "[react-native-ai-image] Invalid http(s) URL: \(uri)")
       }
       // Synchronous fetch; we are already on a background thread (Promise.parallel or sync call).
       let semaphore = DispatchSemaphore(value: 0)
@@ -152,10 +152,10 @@ final class HybridImageToRgb: HybridImageToRgbSpec {
       task.resume()
       _ = semaphore.wait(timeout: .now() + 30)
       if let err = fetchError {
-        throw RuntimeError.error(withMessage: "[react-native-image-to-rgb] HTTP fetch failed: \(err.localizedDescription)")
+        throw RuntimeError.error(withMessage: "[react-native-ai-image] HTTP fetch failed: \(err.localizedDescription)")
       }
       guard let result = fetched else {
-        throw RuntimeError.error(withMessage: "[react-native-image-to-rgb] HTTP fetch returned no data for: \(uri)")
+        throw RuntimeError.error(withMessage: "[react-native-ai-image] HTTP fetch returned no data for: \(uri)")
       }
       return result
     }
@@ -163,14 +163,14 @@ final class HybridImageToRgb: HybridImageToRgbSpec {
     let path: String
     if uri.hasPrefix("file://") {
       guard let url = URL(string: uri), url.isFileURL else {
-        throw RuntimeError.error(withMessage: "[react-native-image-to-rgb] Invalid file URL: \(uri)")
+        throw RuntimeError.error(withMessage: "[react-native-ai-image] Invalid file URL: \(uri)")
       }
       path = url.path
     } else {
       path = uri
     }
     guard FileManager.default.fileExists(atPath: path) else {
-      throw RuntimeError.error(withMessage: "[react-native-image-to-rgb] File does not exist: \(path)")
+      throw RuntimeError.error(withMessage: "[react-native-ai-image] File does not exist: \(path)")
     }
     return try Data(contentsOf: URL(fileURLWithPath: path))
   }
@@ -223,7 +223,7 @@ final class HybridImageToRgb: HybridImageToRgbSpec {
     case 0, 90, 180, 270: return n
     default:
       throw RuntimeError.error(withMessage:
-        "[react-native-image-to-rgb] rotation must be 0, 90, 180, or 270 (got \(r))")
+        "[react-native-ai-image] rotation must be 0, 90, 180, or 270 (got \(r))")
     }
   }
 
@@ -374,7 +374,7 @@ final class HybridImageToRgb: HybridImageToRgbSpec {
         // Non-premultiplied RGBA: byte order is R, G, B, A in memory.
         bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue | CGBitmapInfo.byteOrder32Big.rawValue
       ) else {
-        throw RuntimeError.error(withMessage: "[react-native-image-to-rgb] Failed to create CGContext")
+        throw RuntimeError.error(withMessage: "[react-native-ai-image] Failed to create CGContext")
       }
       ctx.interpolationQuality = .high
       ctx.draw(image, in: CGRect(x: 0, y: 0, width: width, height: height))

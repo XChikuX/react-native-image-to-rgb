@@ -1,7 +1,7 @@
 {
-  "name": "react-native-image-to-rgb",
+  "name": "react-native-ai-image",
   "version": "0.2.0",
-  "description": "Fast, zero-copy image → RGB tensor conversion for React Native (Nitro Modules). Strong defaults for darknet/YOLOv4 and TFLite pipelines.",
+  "description": "AI-ready image preprocessing for React Native: zero-copy image → tensor conversion with strong YOLO/TFLite defaults.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/src/index.d.ts",
@@ -36,13 +36,13 @@
     "!**/.*"
   ],
   "scripts": {
-    "example": "bun --cwd example",
+    "example": "npm --prefix example run",
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "rm -rf android/build ios/build lib nitrogen/generated",
-    "specs": "bunx nitrogen --logLevel=debug",
-    "prepare": "bun run specs && bob build",
+    "specs": "nitrogen --logLevel=debug",
+    "prepare": "nitrogen --logLevel=debug && bob build",
     "release": "release-it"
   },
   "keywords": [
@@ -54,6 +54,9 @@
     "image",
     "rgb",
     "tensor",
+    "preprocessing",
+    "inference",
+    "computer-vision",
     "tflite",
     "yolo",
     "yolov4",
