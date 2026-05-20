@@ -95,7 +95,7 @@ function resolveNormalization(n: Normalization | undefined): MeanStd {
     const preset = NORMALIZATION_PRESETS[n]
     if (preset == null) {
       throw new Error(
-        `[react-native-image-to-rgb] Unknown normalization preset: "${n}". ` +
+        `[react-native-ai-image] Unknown normalization preset: "${n}". ` +
           `Expected one of: ${Object.keys(NORMALIZATION_PRESETS).join(', ')}.`
       )
     }
@@ -108,7 +108,7 @@ function resolveNormalization(n: Normalization | undefined): MeanStd {
   const [sR, sG, sB] = triple(n.std)
   if (sR === 0 || sG === 0 || sB === 0) {
     throw new Error(
-      '[react-native-image-to-rgb] normalization std must be non-zero on every channel'
+      '[react-native-ai-image] normalization std must be non-zero on every channel'
     )
   }
   return { meanR: mR, meanG: mG, meanB: mB, stdR: sR, stdG: sG, stdB: sB }
@@ -182,7 +182,7 @@ function buildNativeOptions(
     // Loud, since silent normalization-drop is a footgun for integer-quant pipelines.
 
     console.warn(
-      `[react-native-image-to-rgb] normalization is ignored for integer dataType "${dataType}". ` +
+      `[react-native-ai-image] normalization is ignored for integer dataType "${dataType}". ` +
         `Use 'float16' or 'float32' if you need mean/std normalization.`
     )
   }
@@ -210,7 +210,7 @@ export function convertImage(
   if (typeof uri !== 'string' || uri.length === 0) {
     return Promise.reject(
       new Error(
-        '[react-native-image-to-rgb] convertImage: uri must be a non-empty string'
+        '[react-native-ai-image] convertImage: uri must be a non-empty string'
       )
     )
   }
@@ -233,7 +233,7 @@ export function convertImageSync(
 ): ConvertResult {
   if (typeof uri !== 'string' || uri.length === 0) {
     throw new Error(
-      '[react-native-image-to-rgb] convertImageSync: uri must be a non-empty string'
+      '[react-native-ai-image] convertImageSync: uri must be a non-empty string'
     )
   }
   return ImageToRgbHybrid.convertImageSync(uri, buildNativeOptions(options))
@@ -352,7 +352,7 @@ export function asTypedArray(
       // Exhaustiveness check
       const _exhaustive: never = result.dataType
       throw new Error(
-        `[react-native-image-to-rgb] Unknown dataType: ${String(_exhaustive)}`
+        `[react-native-ai-image] Unknown dataType: ${String(_exhaustive)}`
       )
     }
   }

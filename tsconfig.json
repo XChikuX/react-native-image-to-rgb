@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "react-native-image-to-rgb": ["./src/index"]
+      "react-native-ai-image": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
