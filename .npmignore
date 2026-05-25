@@ -1,0 +1,22 @@
+# Test files and mocks
+src/__tests__/
+src/__fixtures__/
+src/__mocks__/
+
+# Git files (redundant with .gitignore but explicit)
+.git/
+.gitattributes
+
+# CI/CD workflows (not needed at runtime)
+.github/
+
+# Development tooling
+.editorconfig
+.watchmanconfig
+.nvmrc
+.env*
+*.log
+
+# Lock files
+*.lock
+bun.lock
