@@ -12,7 +12,7 @@
 
 
 
-namespace margelo::nitro::imagetorgb {
+namespace margelo::nitro::aiimage {
 
   using namespace facebook;
 
@@ -21,7 +21,7 @@ namespace margelo::nitro::imagetorgb {
    */
   struct JCropRect final: public jni::JavaClass<JCropRect> {
   public:
-    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/imagetorgb/CropRect;";
+    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/aiimage/CropRect;";
 
   public:
     /**
@@ -66,4 +66,4 @@ namespace margelo::nitro::imagetorgb {
     }
   };
 
-} // namespace margelo::nitro::imagetorgb
+} // namespace margelo::nitro::aiimage

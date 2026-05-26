@@ -10,10 +10,10 @@ import NitroModules
 /**
  * Represents an instance of `CropRect`, backed by a C++ struct.
  */
-public typealias CropRect = margelo.nitro.imagetorgb.CropRect
+public typealias CropRect = margelo.nitro.aiimage.CropRect
 
 public extension CropRect {
-  private typealias bridge = margelo.nitro.imagetorgb.bridge.swift
+  private typealias bridge = margelo.nitro.aiimage.bridge.swift
 
   /**
    * Create a new instance of `CropRect`.

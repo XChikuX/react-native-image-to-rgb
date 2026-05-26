@@ -1,27 +1,24 @@
 {
   "$schema": "https://nitro.margelo.com/nitro.schema.json",
-  "cxxNamespace": ["imagetorgb"],
+  "cxxNamespace": ["aiimage"],
   "ios": {
-    "iosModuleName": "NitroImageToRgb"
+    "iosModuleName": "NitroAiImage"
   },
   "android": {
-    "androidNamespace": ["imagetorgb"],
-    "androidCxxLibName": "NitroImageToRgb"
+    "androidNamespace": ["aiimage"],
+    "androidCxxLibName": "NitroAiImage"
   },
   "autolinking": {
-    "ImageToRgb": {
+    "AiImage": {
       "ios": {
         "language": "swift",
-        "implementationClassName": "HybridImageToRgb"
+        "implementationClassName": "HybridAiImage"
       },
       "android": {
         "language": "kotlin",
-        "implementationClassName": "HybridImageToRgb"
+        "implementationClassName": "HybridAiImage"
       }
     }
   },
-  "ignorePaths": [
-    "**/node_modules",
-    "**/.bun"
-  ]
+  "ignorePaths": ["**/node_modules", "**/.bun"]
 }

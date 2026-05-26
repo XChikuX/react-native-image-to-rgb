@@ -19,7 +19,7 @@
 #include <NitroModules/ArrayBuffer.hpp>
 #include <NitroModules/JArrayBuffer.hpp>
 
-namespace margelo::nitro::imagetorgb {
+namespace margelo::nitro::aiimage {
 
   using namespace facebook;
 
@@ -28,7 +28,7 @@ namespace margelo::nitro::imagetorgb {
    */
   struct JConvertResult final: public jni::JavaClass<JConvertResult> {
   public:
-    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/imagetorgb/ConvertResult;";
+    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/aiimage/ConvertResult;";
 
   public:
     /**
@@ -109,4 +109,4 @@ namespace margelo::nitro::imagetorgb {
     }
   };
 
-} // namespace margelo::nitro::imagetorgb
+} // namespace margelo::nitro::aiimage

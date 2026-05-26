@@ -8,7 +8,7 @@
 /**
  * Represents the JS union `DataType`, backed by a C++ enum.
  */
-public typealias DataType = margelo.nitro.imagetorgb.DataType
+public typealias DataType = margelo.nitro.aiimage.DataType
 
 public extension DataType {
   /**

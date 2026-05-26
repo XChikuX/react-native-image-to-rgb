@@ -8,7 +8,7 @@
 /**
  * Represents the JS union `ChannelLayout`, backed by a C++ enum.
  */
-public typealias ChannelLayout = margelo.nitro.imagetorgb.ChannelLayout
+public typealias ChannelLayout = margelo.nitro.aiimage.ChannelLayout
 
 public extension ChannelLayout {
   /**

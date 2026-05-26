@@ -22,7 +22,7 @@
 #include "ResizeMode.hpp"
 #include <optional>
 
-namespace margelo::nitro::imagetorgb {
+namespace margelo::nitro::aiimage {
 
   using namespace facebook;
 
@@ -31,7 +31,7 @@ namespace margelo::nitro::imagetorgb {
    */
   struct JConvertOptions final: public jni::JavaClass<JConvertOptions> {
   public:
-    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/imagetorgb/ConvertOptions;";
+    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/aiimage/ConvertOptions;";
 
   public:
     /**
@@ -132,4 +132,4 @@ namespace margelo::nitro::imagetorgb {
     }
   };
 
-} // namespace margelo::nitro::imagetorgb
+} // namespace margelo::nitro::aiimage

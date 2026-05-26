@@ -2,7 +2,7 @@ buildscript {
   ext.getExtOrDefault = { name ->
     return rootProject.ext.has(name)
       ? rootProject.ext.get(name)
-      : project.properties["ImageToRgb_" + name]
+      : project.properties["AiImage_" + name]
   }
 
   repositories {
@@ -25,22 +25,26 @@ apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
 
 // Apply Nitrogen autolinking (adds generated Kotlin sources + boost message).
-apply from: '../nitrogen/generated/android/NitroImageToRgb+autolinking.gradle'
+apply from: '../nitrogen/generated/android/NitroAiImage+autolinking.gradle'
 
 if (isNewArchitectureEnabled()) {
   apply plugin: "com.facebook.react"
 }
 
 def getExtOrDefault(name) {
-  return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties["ImageToRgb_" + name]
+  return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties["AiImage_" + name]
 }
 
 def getExtOrIntegerDefault(name) {
-  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["ImageToRgb_" + name]).toInteger()
+  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["AiImage_" + name]).toInteger()
 }
 
 android {
-  namespace "com.imagetorgb"
+  // Namespace renamed away from `com.imagetorgb` so the generated
+  // `BuildConfig`, `R`, and other namespace-scoped classes do not collide
+  // with the legacy `react-native-image-to-rgb` package (which still ships
+  // `com.imagetorgb.BuildConfig`) when both are installed side-by-side.
+  namespace "com.aiimage"
 
   ndkVersion getExtOrDefault("ndkVersion")
   compileSdkVersion getExtOrIntegerDefault("compileSdkVersion")
@@ -126,7 +130,7 @@ dependencies {
 if (isNewArchitectureEnabled()) {
   react {
     jsRootDir = file("../src/")
-    libraryName = "ImageToRgb"
-    codegenJavaPackageName = "com.imagetorgb"
+    libraryName = "AiImage"
+    codegenJavaPackageName = "com.aiimage"
   }
 }

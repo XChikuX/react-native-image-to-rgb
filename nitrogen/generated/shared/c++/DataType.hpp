@@ -23,7 +23,7 @@
 #error NitroModules cannot be found! Are you sure you installed NitroModules properly?
 #endif
 
-namespace margelo::nitro::imagetorgb {
+namespace margelo::nitro::aiimage {
 
   /**
    * An enum which can be represented as a JavaScript union (DataType).
@@ -36,32 +36,32 @@ namespace margelo::nitro::imagetorgb {
     FLOAT32      SWIFT_NAME(float32) = 4,
   } CLOSED_ENUM;
 
-} // namespace margelo::nitro::imagetorgb
+} // namespace margelo::nitro::aiimage
 
 namespace margelo::nitro {
 
   // C++ DataType <> JS DataType (union)
   template <>
-  struct JSIConverter<margelo::nitro::imagetorgb::DataType> final {
-    static inline margelo::nitro::imagetorgb::DataType fromJSI(jsi::Runtime& runtime, const jsi::Value& arg) {
+  struct JSIConverter<margelo::nitro::aiimage::DataType> final {
+    static inline margelo::nitro::aiimage::DataType fromJSI(jsi::Runtime& runtime, const jsi::Value& arg) {
       std::string unionValue = JSIConverter<std::string>::fromJSI(runtime, arg);
       switch (hashString(unionValue.c_str(), unionValue.size())) {
-        case hashString("uint8"): return margelo::nitro::imagetorgb::DataType::UINT8;
-        case hashString("int8"): return margelo::nitro::imagetorgb::DataType::INT8;
-        case hashString("uint16"): return margelo::nitro::imagetorgb::DataType::UINT16;
-        case hashString("float16"): return margelo::nitro::imagetorgb::DataType::FLOAT16;
-        case hashString("float32"): return margelo::nitro::imagetorgb::DataType::FLOAT32;
+        case hashString("uint8"): return margelo::nitro::aiimage::DataType::UINT8;
+        case hashString("int8"): return margelo::nitro::aiimage::DataType::INT8;
+        case hashString("uint16"): return margelo::nitro::aiimage::DataType::UINT16;
+        case hashString("float16"): return margelo::nitro::aiimage::DataType::FLOAT16;
+        case hashString("float32"): return margelo::nitro::aiimage::DataType::FLOAT32;
         default: [[unlikely]]
           throw std::invalid_argument("Cannot convert \"" + unionValue + "\" to enum DataType - invalid value!");
       }
     }
-    static inline jsi::Value toJSI(jsi::Runtime& runtime, margelo::nitro::imagetorgb::DataType arg) {
+    static inline jsi::Value toJSI(jsi::Runtime& runtime, margelo::nitro::aiimage::DataType arg) {
       switch (arg) {
-        case margelo::nitro::imagetorgb::DataType::UINT8: return JSIConverter<std::string>::toJSI(runtime, "uint8");
-        case margelo::nitro::imagetorgb::DataType::INT8: return JSIConverter<std::string>::toJSI(runtime, "int8");
-        case margelo::nitro::imagetorgb::DataType::UINT16: return JSIConverter<std::string>::toJSI(runtime, "uint16");
-        case margelo::nitro::imagetorgb::DataType::FLOAT16: return JSIConverter<std::string>::toJSI(runtime, "float16");
-        case margelo::nitro::imagetorgb::DataType::FLOAT32: return JSIConverter<std::string>::toJSI(runtime, "float32");
+        case margelo::nitro::aiimage::DataType::UINT8: return JSIConverter<std::string>::toJSI(runtime, "uint8");
+        case margelo::nitro::aiimage::DataType::INT8: return JSIConverter<std::string>::toJSI(runtime, "int8");
+        case margelo::nitro::aiimage::DataType::UINT16: return JSIConverter<std::string>::toJSI(runtime, "uint16");
+        case margelo::nitro::aiimage::DataType::FLOAT16: return JSIConverter<std::string>::toJSI(runtime, "float16");
+        case margelo::nitro::aiimage::DataType::FLOAT32: return JSIConverter<std::string>::toJSI(runtime, "float32");
         default: [[unlikely]]
           throw std::invalid_argument("Cannot convert DataType to JS - invalid value: "
                                     + std::to_string(static_cast<int>(arg)) + "!");

@@ -1,8 +1,8 @@
 #include <fbjni/fbjni.h>
 #include <jni.h>
 
-#include "NitroImageToRgbOnLoad.hpp"
+#include "NitroAiImageOnLoad.hpp"
 
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void*) {
-  return margelo::nitro::imagetorgb::initialize(vm);
+  return margelo::nitro::aiimage::initialize(vm);
 }

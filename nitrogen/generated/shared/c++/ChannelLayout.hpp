@@ -23,7 +23,7 @@
 #error NitroModules cannot be found! Are you sure you installed NitroModules properly?
 #endif
 
-namespace margelo::nitro::imagetorgb {
+namespace margelo::nitro::aiimage {
 
   /**
    * An enum which can be represented as a JavaScript union (ChannelLayout).
@@ -33,26 +33,26 @@ namespace margelo::nitro::imagetorgb {
     CHW      SWIFT_NAME(chw) = 1,
   } CLOSED_ENUM;
 
-} // namespace margelo::nitro::imagetorgb
+} // namespace margelo::nitro::aiimage
 
 namespace margelo::nitro {
 
   // C++ ChannelLayout <> JS ChannelLayout (union)
   template <>
-  struct JSIConverter<margelo::nitro::imagetorgb::ChannelLayout> final {
-    static inline margelo::nitro::imagetorgb::ChannelLayout fromJSI(jsi::Runtime& runtime, const jsi::Value& arg) {
+  struct JSIConverter<margelo::nitro::aiimage::ChannelLayout> final {
+    static inline margelo::nitro::aiimage::ChannelLayout fromJSI(jsi::Runtime& runtime, const jsi::Value& arg) {
       std::string unionValue = JSIConverter<std::string>::fromJSI(runtime, arg);
       switch (hashString(unionValue.c_str(), unionValue.size())) {
-        case hashString("hwc"): return margelo::nitro::imagetorgb::ChannelLayout::HWC;
-        case hashString("chw"): return margelo::nitro::imagetorgb::ChannelLayout::CHW;
+        case hashString("hwc"): return margelo::nitro::aiimage::ChannelLayout::HWC;
+        case hashString("chw"): return margelo::nitro::aiimage::ChannelLayout::CHW;
         default: [[unlikely]]
           throw std::invalid_argument("Cannot convert \"" + unionValue + "\" to enum ChannelLayout - invalid value!");
       }
     }
-    static inline jsi::Value toJSI(jsi::Runtime& runtime, margelo::nitro::imagetorgb::ChannelLayout arg) {
+    static inline jsi::Value toJSI(jsi::Runtime& runtime, margelo::nitro::aiimage::ChannelLayout arg) {
       switch (arg) {
-        case margelo::nitro::imagetorgb::ChannelLayout::HWC: return JSIConverter<std::string>::toJSI(runtime, "hwc");
-        case margelo::nitro::imagetorgb::ChannelLayout::CHW: return JSIConverter<std::string>::toJSI(runtime, "chw");
+        case margelo::nitro::aiimage::ChannelLayout::HWC: return JSIConverter<std::string>::toJSI(runtime, "hwc");
+        case margelo::nitro::aiimage::ChannelLayout::CHW: return JSIConverter<std::string>::toJSI(runtime, "chw");
         default: [[unlikely]]
           throw std::invalid_argument("Cannot convert ChannelLayout to JS - invalid value: "
                                     + std::to_string(static_cast<int>(arg)) + "!");

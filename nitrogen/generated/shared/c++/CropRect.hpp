@@ -32,7 +32,7 @@
 
 
 
-namespace margelo::nitro::imagetorgb {
+namespace margelo::nitro::aiimage {
 
   /**
    * A struct which can be represented as a JavaScript object (CropRect).
@@ -52,23 +52,23 @@ namespace margelo::nitro::imagetorgb {
     friend bool operator==(const CropRect& lhs, const CropRect& rhs) = default;
   };
 
-} // namespace margelo::nitro::imagetorgb
+} // namespace margelo::nitro::aiimage
 
 namespace margelo::nitro {
 
   // C++ CropRect <> JS CropRect (object)
   template <>
-  struct JSIConverter<margelo::nitro::imagetorgb::CropRect> final {
-    static inline margelo::nitro::imagetorgb::CropRect fromJSI(jsi::Runtime& runtime, const jsi::Value& arg) {
+  struct JSIConverter<margelo::nitro::aiimage::CropRect> final {
+    static inline margelo::nitro::aiimage::CropRect fromJSI(jsi::Runtime& runtime, const jsi::Value& arg) {
       jsi::Object obj = arg.asObject(runtime);
-      return margelo::nitro::imagetorgb::CropRect(
+      return margelo::nitro::aiimage::CropRect(
         JSIConverter<double>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "x"))),
         JSIConverter<double>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "y"))),
         JSIConverter<double>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "width"))),
         JSIConverter<double>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "height")))
       );
     }
-    static inline jsi::Value toJSI(jsi::Runtime& runtime, const margelo::nitro::imagetorgb::CropRect& arg) {
+    static inline jsi::Value toJSI(jsi::Runtime& runtime, const margelo::nitro::aiimage::CropRect& arg) {
       jsi::Object obj(runtime);
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "x"), JSIConverter<double>::toJSI(runtime, arg.x));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "y"), JSIConverter<double>::toJSI(runtime, arg.y));

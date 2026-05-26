@@ -29,18 +29,18 @@
 #endif
 
 // Forward declaration of `PixelFormat` to properly resolve imports.
-namespace margelo::nitro::imagetorgb { enum class PixelFormat; }
+namespace margelo::nitro::aiimage { enum class PixelFormat; }
 // Forward declaration of `DataType` to properly resolve imports.
-namespace margelo::nitro::imagetorgb { enum class DataType; }
+namespace margelo::nitro::aiimage { enum class DataType; }
 // Forward declaration of `ChannelLayout` to properly resolve imports.
-namespace margelo::nitro::imagetorgb { enum class ChannelLayout; }
+namespace margelo::nitro::aiimage { enum class ChannelLayout; }
 
 #include <NitroModules/ArrayBuffer.hpp>
 #include "PixelFormat.hpp"
 #include "DataType.hpp"
 #include "ChannelLayout.hpp"
 
-namespace margelo::nitro::imagetorgb {
+namespace margelo::nitro::aiimage {
 
   /**
    * A struct which can be represented as a JavaScript object (ConvertResult).
@@ -69,23 +69,23 @@ namespace margelo::nitro::imagetorgb {
     friend bool operator==(const ConvertResult& lhs, const ConvertResult& rhs) = default;
   };
 
-} // namespace margelo::nitro::imagetorgb
+} // namespace margelo::nitro::aiimage
 
 namespace margelo::nitro {
 
   // C++ ConvertResult <> JS ConvertResult (object)
   template <>
-  struct JSIConverter<margelo::nitro::imagetorgb::ConvertResult> final {
-    static inline margelo::nitro::imagetorgb::ConvertResult fromJSI(jsi::Runtime& runtime, const jsi::Value& arg) {
+  struct JSIConverter<margelo::nitro::aiimage::ConvertResult> final {
+    static inline margelo::nitro::aiimage::ConvertResult fromJSI(jsi::Runtime& runtime, const jsi::Value& arg) {
       jsi::Object obj = arg.asObject(runtime);
-      return margelo::nitro::imagetorgb::ConvertResult(
+      return margelo::nitro::aiimage::ConvertResult(
         JSIConverter<std::shared_ptr<ArrayBuffer>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "data"))),
         JSIConverter<double>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "width"))),
         JSIConverter<double>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "height"))),
         JSIConverter<double>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "channels"))),
-        JSIConverter<margelo::nitro::imagetorgb::PixelFormat>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "pixelFormat"))),
-        JSIConverter<margelo::nitro::imagetorgb::DataType>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "dataType"))),
-        JSIConverter<margelo::nitro::imagetorgb::ChannelLayout>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "channelLayout"))),
+        JSIConverter<margelo::nitro::aiimage::PixelFormat>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "pixelFormat"))),
+        JSIConverter<margelo::nitro::aiimage::DataType>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "dataType"))),
+        JSIConverter<margelo::nitro::aiimage::ChannelLayout>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "channelLayout"))),
         JSIConverter<double>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "contentX"))),
         JSIConverter<double>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "contentY"))),
         JSIConverter<double>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "contentWidth"))),
@@ -94,15 +94,15 @@ namespace margelo::nitro {
         JSIConverter<double>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "sourceHeight")))
       );
     }
-    static inline jsi::Value toJSI(jsi::Runtime& runtime, const margelo::nitro::imagetorgb::ConvertResult& arg) {
+    static inline jsi::Value toJSI(jsi::Runtime& runtime, const margelo::nitro::aiimage::ConvertResult& arg) {
       jsi::Object obj(runtime);
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "data"), JSIConverter<std::shared_ptr<ArrayBuffer>>::toJSI(runtime, arg.data));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "width"), JSIConverter<double>::toJSI(runtime, arg.width));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "height"), JSIConverter<double>::toJSI(runtime, arg.height));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "channels"), JSIConverter<double>::toJSI(runtime, arg.channels));
-      obj.setProperty(runtime, PropNameIDCache::get(runtime, "pixelFormat"), JSIConverter<margelo::nitro::imagetorgb::PixelFormat>::toJSI(runtime, arg.pixelFormat));
-      obj.setProperty(runtime, PropNameIDCache::get(runtime, "dataType"), JSIConverter<margelo::nitro::imagetorgb::DataType>::toJSI(runtime, arg.dataType));
-      obj.setProperty(runtime, PropNameIDCache::get(runtime, "channelLayout"), JSIConverter<margelo::nitro::imagetorgb::ChannelLayout>::toJSI(runtime, arg.channelLayout));
+      obj.setProperty(runtime, PropNameIDCache::get(runtime, "pixelFormat"), JSIConverter<margelo::nitro::aiimage::PixelFormat>::toJSI(runtime, arg.pixelFormat));
+      obj.setProperty(runtime, PropNameIDCache::get(runtime, "dataType"), JSIConverter<margelo::nitro::aiimage::DataType>::toJSI(runtime, arg.dataType));
+      obj.setProperty(runtime, PropNameIDCache::get(runtime, "channelLayout"), JSIConverter<margelo::nitro::aiimage::ChannelLayout>::toJSI(runtime, arg.channelLayout));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "contentX"), JSIConverter<double>::toJSI(runtime, arg.contentX));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "contentY"), JSIConverter<double>::toJSI(runtime, arg.contentY));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "contentWidth"), JSIConverter<double>::toJSI(runtime, arg.contentWidth));
@@ -123,9 +123,9 @@ namespace margelo::nitro {
       if (!JSIConverter<double>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "width")))) return false;
       if (!JSIConverter<double>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "height")))) return false;
       if (!JSIConverter<double>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "channels")))) return false;
-      if (!JSIConverter<margelo::nitro::imagetorgb::PixelFormat>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "pixelFormat")))) return false;
-      if (!JSIConverter<margelo::nitro::imagetorgb::DataType>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "dataType")))) return false;
-      if (!JSIConverter<margelo::nitro::imagetorgb::ChannelLayout>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "channelLayout")))) return false;
+      if (!JSIConverter<margelo::nitro::aiimage::PixelFormat>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "pixelFormat")))) return false;
+      if (!JSIConverter<margelo::nitro::aiimage::DataType>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "dataType")))) return false;
+      if (!JSIConverter<margelo::nitro::aiimage::ChannelLayout>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "channelLayout")))) return false;
       if (!JSIConverter<double>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "contentX")))) return false;
       if (!JSIConverter<double>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "contentY")))) return false;
       if (!JSIConverter<double>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "contentWidth")))) return false;

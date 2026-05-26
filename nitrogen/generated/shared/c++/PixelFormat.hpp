@@ -23,7 +23,7 @@
 #error NitroModules cannot be found! Are you sure you installed NitroModules properly?
 #endif
 
-namespace margelo::nitro::imagetorgb {
+namespace margelo::nitro::aiimage {
 
   /**
    * An enum which can be represented as a JavaScript union (PixelFormat).
@@ -37,34 +37,34 @@ namespace margelo::nitro::imagetorgb {
     ABGR      SWIFT_NAME(abgr) = 5,
   } CLOSED_ENUM;
 
-} // namespace margelo::nitro::imagetorgb
+} // namespace margelo::nitro::aiimage
 
 namespace margelo::nitro {
 
   // C++ PixelFormat <> JS PixelFormat (union)
   template <>
-  struct JSIConverter<margelo::nitro::imagetorgb::PixelFormat> final {
-    static inline margelo::nitro::imagetorgb::PixelFormat fromJSI(jsi::Runtime& runtime, const jsi::Value& arg) {
+  struct JSIConverter<margelo::nitro::aiimage::PixelFormat> final {
+    static inline margelo::nitro::aiimage::PixelFormat fromJSI(jsi::Runtime& runtime, const jsi::Value& arg) {
       std::string unionValue = JSIConverter<std::string>::fromJSI(runtime, arg);
       switch (hashString(unionValue.c_str(), unionValue.size())) {
-        case hashString("rgb"): return margelo::nitro::imagetorgb::PixelFormat::RGB;
-        case hashString("rgba"): return margelo::nitro::imagetorgb::PixelFormat::RGBA;
-        case hashString("argb"): return margelo::nitro::imagetorgb::PixelFormat::ARGB;
-        case hashString("bgr"): return margelo::nitro::imagetorgb::PixelFormat::BGR;
-        case hashString("bgra"): return margelo::nitro::imagetorgb::PixelFormat::BGRA;
-        case hashString("abgr"): return margelo::nitro::imagetorgb::PixelFormat::ABGR;
+        case hashString("rgb"): return margelo::nitro::aiimage::PixelFormat::RGB;
+        case hashString("rgba"): return margelo::nitro::aiimage::PixelFormat::RGBA;
+        case hashString("argb"): return margelo::nitro::aiimage::PixelFormat::ARGB;
+        case hashString("bgr"): return margelo::nitro::aiimage::PixelFormat::BGR;
+        case hashString("bgra"): return margelo::nitro::aiimage::PixelFormat::BGRA;
+        case hashString("abgr"): return margelo::nitro::aiimage::PixelFormat::ABGR;
         default: [[unlikely]]
           throw std::invalid_argument("Cannot convert \"" + unionValue + "\" to enum PixelFormat - invalid value!");
       }
     }
-    static inline jsi::Value toJSI(jsi::Runtime& runtime, margelo::nitro::imagetorgb::PixelFormat arg) {
+    static inline jsi::Value toJSI(jsi::Runtime& runtime, margelo::nitro::aiimage::PixelFormat arg) {
       switch (arg) {
-        case margelo::nitro::imagetorgb::PixelFormat::RGB: return JSIConverter<std::string>::toJSI(runtime, "rgb");
-        case margelo::nitro::imagetorgb::PixelFormat::RGBA: return JSIConverter<std::string>::toJSI(runtime, "rgba");
-        case margelo::nitro::imagetorgb::PixelFormat::ARGB: return JSIConverter<std::string>::toJSI(runtime, "argb");
-        case margelo::nitro::imagetorgb::PixelFormat::BGR: return JSIConverter<std::string>::toJSI(runtime, "bgr");
-        case margelo::nitro::imagetorgb::PixelFormat::BGRA: return JSIConverter<std::string>::toJSI(runtime, "bgra");
-        case margelo::nitro::imagetorgb::PixelFormat::ABGR: return JSIConverter<std::string>::toJSI(runtime, "abgr");
+        case margelo::nitro::aiimage::PixelFormat::RGB: return JSIConverter<std::string>::toJSI(runtime, "rgb");
+        case margelo::nitro::aiimage::PixelFormat::RGBA: return JSIConverter<std::string>::toJSI(runtime, "rgba");
+        case margelo::nitro::aiimage::PixelFormat::ARGB: return JSIConverter<std::string>::toJSI(runtime, "argb");
+        case margelo::nitro::aiimage::PixelFormat::BGR: return JSIConverter<std::string>::toJSI(runtime, "bgr");
+        case margelo::nitro::aiimage::PixelFormat::BGRA: return JSIConverter<std::string>::toJSI(runtime, "bgra");
+        case margelo::nitro::aiimage::PixelFormat::ABGR: return JSIConverter<std::string>::toJSI(runtime, "abgr");
         default: [[unlikely]]
           throw std::invalid_argument("Cannot convert PixelFormat to JS - invalid value: "
                                     + std::to_string(static_cast<int>(arg)) + "!");

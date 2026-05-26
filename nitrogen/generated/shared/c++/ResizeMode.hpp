@@ -23,7 +23,7 @@
 #error NitroModules cannot be found! Are you sure you installed NitroModules properly?
 #endif
 
-namespace margelo::nitro::imagetorgb {
+namespace margelo::nitro::aiimage {
 
   /**
    * An enum which can be represented as a JavaScript union (ResizeMode).
@@ -35,30 +35,30 @@ namespace margelo::nitro::imagetorgb {
     LETTERBOX      SWIFT_NAME(letterbox) = 3,
   } CLOSED_ENUM;
 
-} // namespace margelo::nitro::imagetorgb
+} // namespace margelo::nitro::aiimage
 
 namespace margelo::nitro {
 
   // C++ ResizeMode <> JS ResizeMode (union)
   template <>
-  struct JSIConverter<margelo::nitro::imagetorgb::ResizeMode> final {
-    static inline margelo::nitro::imagetorgb::ResizeMode fromJSI(jsi::Runtime& runtime, const jsi::Value& arg) {
+  struct JSIConverter<margelo::nitro::aiimage::ResizeMode> final {
+    static inline margelo::nitro::aiimage::ResizeMode fromJSI(jsi::Runtime& runtime, const jsi::Value& arg) {
       std::string unionValue = JSIConverter<std::string>::fromJSI(runtime, arg);
       switch (hashString(unionValue.c_str(), unionValue.size())) {
-        case hashString("stretch"): return margelo::nitro::imagetorgb::ResizeMode::STRETCH;
-        case hashString("cover"): return margelo::nitro::imagetorgb::ResizeMode::COVER;
-        case hashString("contain"): return margelo::nitro::imagetorgb::ResizeMode::CONTAIN;
-        case hashString("letterbox"): return margelo::nitro::imagetorgb::ResizeMode::LETTERBOX;
+        case hashString("stretch"): return margelo::nitro::aiimage::ResizeMode::STRETCH;
+        case hashString("cover"): return margelo::nitro::aiimage::ResizeMode::COVER;
+        case hashString("contain"): return margelo::nitro::aiimage::ResizeMode::CONTAIN;
+        case hashString("letterbox"): return margelo::nitro::aiimage::ResizeMode::LETTERBOX;
         default: [[unlikely]]
           throw std::invalid_argument("Cannot convert \"" + unionValue + "\" to enum ResizeMode - invalid value!");
       }
     }
-    static inline jsi::Value toJSI(jsi::Runtime& runtime, margelo::nitro::imagetorgb::ResizeMode arg) {
+    static inline jsi::Value toJSI(jsi::Runtime& runtime, margelo::nitro::aiimage::ResizeMode arg) {
       switch (arg) {
-        case margelo::nitro::imagetorgb::ResizeMode::STRETCH: return JSIConverter<std::string>::toJSI(runtime, "stretch");
-        case margelo::nitro::imagetorgb::ResizeMode::COVER: return JSIConverter<std::string>::toJSI(runtime, "cover");
-        case margelo::nitro::imagetorgb::ResizeMode::CONTAIN: return JSIConverter<std::string>::toJSI(runtime, "contain");
-        case margelo::nitro::imagetorgb::ResizeMode::LETTERBOX: return JSIConverter<std::string>::toJSI(runtime, "letterbox");
+        case margelo::nitro::aiimage::ResizeMode::STRETCH: return JSIConverter<std::string>::toJSI(runtime, "stretch");
+        case margelo::nitro::aiimage::ResizeMode::COVER: return JSIConverter<std::string>::toJSI(runtime, "cover");
+        case margelo::nitro::aiimage::ResizeMode::CONTAIN: return JSIConverter<std::string>::toJSI(runtime, "contain");
+        case margelo::nitro::aiimage::ResizeMode::LETTERBOX: return JSIConverter<std::string>::toJSI(runtime, "letterbox");
         default: [[unlikely]]
           throw std::invalid_argument("Cannot convert ResizeMode to JS - invalid value: "
                                     + std::to_string(static_cast<int>(arg)) + "!");

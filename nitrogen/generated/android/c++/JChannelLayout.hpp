@@ -10,7 +10,7 @@
 #include <fbjni/fbjni.h>
 #include "ChannelLayout.hpp"
 
-namespace margelo::nitro::imagetorgb {
+namespace margelo::nitro::aiimage {
 
   using namespace facebook;
 
@@ -19,7 +19,7 @@ namespace margelo::nitro::imagetorgb {
    */
   struct JChannelLayout final: public jni::JavaClass<JChannelLayout> {
   public:
-    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/imagetorgb/ChannelLayout;";
+    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/aiimage/ChannelLayout;";
 
   public:
     /**
@@ -55,4 +55,4 @@ namespace margelo::nitro::imagetorgb {
     }
   };
 
-} // namespace margelo::nitro::imagetorgb
+} // namespace margelo::nitro::aiimage

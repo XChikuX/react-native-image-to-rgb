@@ -1,6 +1,6 @@
 import { NitroModules } from 'react-native-nitro-modules'
 import type {
-  ImageToRgb,
+  AiImage,
   ConvertOptions,
   ConvertResult,
   PixelFormat,
@@ -8,10 +8,10 @@ import type {
   ChannelLayout,
   ResizeMode,
   CropRect,
-} from './specs/ImageToRgb.nitro'
+} from './specs/AiImage.nitro'
 
 export type {
-  ImageToRgb,
+  AiImage,
   ConvertOptions,
   ConvertResult,
   PixelFormat,
@@ -21,12 +21,19 @@ export type {
   CropRect,
 }
 
+/**
+ * @deprecated Renamed to {@link AiImage}. Kept as an alias for users migrating
+ * from `react-native-image-to-rgb`.
+ */
+export type ImageToRgb = AiImage
+
 // -----------------------------------------------------------------------------
 // HybridObject singleton
 // -----------------------------------------------------------------------------
 
-const ImageToRgbHybrid =
-  NitroModules.createHybridObject<ImageToRgb>('ImageToRgb')
+// Registered under "AiImage" (not "ImageToRgb") so the legacy package can
+// coexist in the same app without collisions in Nitro's HybridObjectRegistry.
+const AiImageHybrid = NitroModules.createHybridObject<AiImage>('AiImage')
 
 // -----------------------------------------------------------------------------
 // Normalization presets
@@ -220,7 +227,7 @@ export function convertImage(
   } catch (e) {
     return Promise.reject(e)
   }
-  return ImageToRgbHybrid.convertImage(uri, nativeOptions)
+  return AiImageHybrid.convertImage(uri, nativeOptions)
 }
 
 /**
@@ -236,7 +243,7 @@ export function convertImageSync(
       '[react-native-ai-image] convertImageSync: uri must be a non-empty string'
     )
   }
-  return ImageToRgbHybrid.convertImageSync(uri, buildNativeOptions(options))
+  return AiImageHybrid.convertImageSync(uri, buildNativeOptions(options))
 }
 
 // -----------------------------------------------------------------------------

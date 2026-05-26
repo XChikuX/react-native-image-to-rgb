@@ -3,8 +3,8 @@ module.exports = {
     platforms: {
       ios: {},
       android: {
-        packageInstance: 'new ImageToRgbPackage()',
-        packageImportPath: 'import com.imagetorgb.ImageToRgbPackage;',
+        packageInstance: 'new AiImagePackage()',
+        packageImportPath: 'import com.aiimage.AiImagePackage;',
       },
     },
   },

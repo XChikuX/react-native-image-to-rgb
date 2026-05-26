@@ -10,10 +10,10 @@ import NitroModules
 /**
  * Represents an instance of `ConvertOptions`, backed by a C++ struct.
  */
-public typealias ConvertOptions = margelo.nitro.imagetorgb.ConvertOptions
+public typealias ConvertOptions = margelo.nitro.aiimage.ConvertOptions
 
 public extension ConvertOptions {
-  private typealias bridge = margelo.nitro.imagetorgb.bridge.swift
+  private typealias bridge = margelo.nitro.aiimage.bridge.swift
 
   /**
    * Create a new instance of `ConvertOptions`.

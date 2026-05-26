@@ -10,7 +10,7 @@
 #include <fbjni/fbjni.h>
 #include "DataType.hpp"
 
-namespace margelo::nitro::imagetorgb {
+namespace margelo::nitro::aiimage {
 
   using namespace facebook;
 
@@ -19,7 +19,7 @@ namespace margelo::nitro::imagetorgb {
    */
   struct JDataType final: public jni::JavaClass<JDataType> {
   public:
-    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/imagetorgb/DataType;";
+    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/aiimage/DataType;";
 
   public:
     /**
@@ -64,4 +64,4 @@ namespace margelo::nitro::imagetorgb {
     }
   };
 
-} // namespace margelo::nitro::imagetorgb
+} // namespace margelo::nitro::aiimage

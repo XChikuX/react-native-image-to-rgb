@@ -10,7 +10,7 @@
 #include <fbjni/fbjni.h>
 #include "PixelFormat.hpp"
 
-namespace margelo::nitro::imagetorgb {
+namespace margelo::nitro::aiimage {
 
   using namespace facebook;
 
@@ -19,7 +19,7 @@ namespace margelo::nitro::imagetorgb {
    */
   struct JPixelFormat final: public jni::JavaClass<JPixelFormat> {
   public:
-    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/imagetorgb/PixelFormat;";
+    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/aiimage/PixelFormat;";
 
   public:
     /**
@@ -67,4 +67,4 @@ namespace margelo::nitro::imagetorgb {
     }
   };
 
-} // namespace margelo::nitro::imagetorgb
+} // namespace margelo::nitro::aiimage

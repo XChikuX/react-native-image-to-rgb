@@ -29,15 +29,15 @@
 #endif
 
 // Forward declaration of `CropRect` to properly resolve imports.
-namespace margelo::nitro::imagetorgb { struct CropRect; }
+namespace margelo::nitro::aiimage { struct CropRect; }
 // Forward declaration of `PixelFormat` to properly resolve imports.
-namespace margelo::nitro::imagetorgb { enum class PixelFormat; }
+namespace margelo::nitro::aiimage { enum class PixelFormat; }
 // Forward declaration of `DataType` to properly resolve imports.
-namespace margelo::nitro::imagetorgb { enum class DataType; }
+namespace margelo::nitro::aiimage { enum class DataType; }
 // Forward declaration of `ChannelLayout` to properly resolve imports.
-namespace margelo::nitro::imagetorgb { enum class ChannelLayout; }
+namespace margelo::nitro::aiimage { enum class ChannelLayout; }
 // Forward declaration of `ResizeMode` to properly resolve imports.
-namespace margelo::nitro::imagetorgb { enum class ResizeMode; }
+namespace margelo::nitro::aiimage { enum class ResizeMode; }
 
 #include <optional>
 #include "CropRect.hpp"
@@ -46,7 +46,7 @@ namespace margelo::nitro::imagetorgb { enum class ResizeMode; }
 #include "ChannelLayout.hpp"
 #include "ResizeMode.hpp"
 
-namespace margelo::nitro::imagetorgb {
+namespace margelo::nitro::aiimage {
 
   /**
    * A struct which can be represented as a JavaScript object (ConvertOptions).
@@ -80,23 +80,23 @@ namespace margelo::nitro::imagetorgb {
     friend bool operator==(const ConvertOptions& lhs, const ConvertOptions& rhs) = default;
   };
 
-} // namespace margelo::nitro::imagetorgb
+} // namespace margelo::nitro::aiimage
 
 namespace margelo::nitro {
 
   // C++ ConvertOptions <> JS ConvertOptions (object)
   template <>
-  struct JSIConverter<margelo::nitro::imagetorgb::ConvertOptions> final {
-    static inline margelo::nitro::imagetorgb::ConvertOptions fromJSI(jsi::Runtime& runtime, const jsi::Value& arg) {
+  struct JSIConverter<margelo::nitro::aiimage::ConvertOptions> final {
+    static inline margelo::nitro::aiimage::ConvertOptions fromJSI(jsi::Runtime& runtime, const jsi::Value& arg) {
       jsi::Object obj = arg.asObject(runtime);
-      return margelo::nitro::imagetorgb::ConvertOptions(
+      return margelo::nitro::aiimage::ConvertOptions(
         JSIConverter<std::optional<double>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "width"))),
         JSIConverter<std::optional<double>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "height"))),
-        JSIConverter<std::optional<margelo::nitro::imagetorgb::CropRect>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "crop"))),
-        JSIConverter<std::optional<margelo::nitro::imagetorgb::PixelFormat>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "pixelFormat"))),
-        JSIConverter<std::optional<margelo::nitro::imagetorgb::DataType>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "dataType"))),
-        JSIConverter<std::optional<margelo::nitro::imagetorgb::ChannelLayout>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "channelLayout"))),
-        JSIConverter<std::optional<margelo::nitro::imagetorgb::ResizeMode>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "resizeMode"))),
+        JSIConverter<std::optional<margelo::nitro::aiimage::CropRect>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "crop"))),
+        JSIConverter<std::optional<margelo::nitro::aiimage::PixelFormat>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "pixelFormat"))),
+        JSIConverter<std::optional<margelo::nitro::aiimage::DataType>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "dataType"))),
+        JSIConverter<std::optional<margelo::nitro::aiimage::ChannelLayout>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "channelLayout"))),
+        JSIConverter<std::optional<margelo::nitro::aiimage::ResizeMode>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "resizeMode"))),
         JSIConverter<std::optional<double>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "letterboxR"))),
         JSIConverter<std::optional<double>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "letterboxG"))),
         JSIConverter<std::optional<double>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "letterboxB"))),
@@ -110,15 +110,15 @@ namespace margelo::nitro {
         JSIConverter<std::optional<bool>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "ignoreExif")))
       );
     }
-    static inline jsi::Value toJSI(jsi::Runtime& runtime, const margelo::nitro::imagetorgb::ConvertOptions& arg) {
+    static inline jsi::Value toJSI(jsi::Runtime& runtime, const margelo::nitro::aiimage::ConvertOptions& arg) {
       jsi::Object obj(runtime);
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "width"), JSIConverter<std::optional<double>>::toJSI(runtime, arg.width));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "height"), JSIConverter<std::optional<double>>::toJSI(runtime, arg.height));
-      obj.setProperty(runtime, PropNameIDCache::get(runtime, "crop"), JSIConverter<std::optional<margelo::nitro::imagetorgb::CropRect>>::toJSI(runtime, arg.crop));
-      obj.setProperty(runtime, PropNameIDCache::get(runtime, "pixelFormat"), JSIConverter<std::optional<margelo::nitro::imagetorgb::PixelFormat>>::toJSI(runtime, arg.pixelFormat));
-      obj.setProperty(runtime, PropNameIDCache::get(runtime, "dataType"), JSIConverter<std::optional<margelo::nitro::imagetorgb::DataType>>::toJSI(runtime, arg.dataType));
-      obj.setProperty(runtime, PropNameIDCache::get(runtime, "channelLayout"), JSIConverter<std::optional<margelo::nitro::imagetorgb::ChannelLayout>>::toJSI(runtime, arg.channelLayout));
-      obj.setProperty(runtime, PropNameIDCache::get(runtime, "resizeMode"), JSIConverter<std::optional<margelo::nitro::imagetorgb::ResizeMode>>::toJSI(runtime, arg.resizeMode));
+      obj.setProperty(runtime, PropNameIDCache::get(runtime, "crop"), JSIConverter<std::optional<margelo::nitro::aiimage::CropRect>>::toJSI(runtime, arg.crop));
+      obj.setProperty(runtime, PropNameIDCache::get(runtime, "pixelFormat"), JSIConverter<std::optional<margelo::nitro::aiimage::PixelFormat>>::toJSI(runtime, arg.pixelFormat));
+      obj.setProperty(runtime, PropNameIDCache::get(runtime, "dataType"), JSIConverter<std::optional<margelo::nitro::aiimage::DataType>>::toJSI(runtime, arg.dataType));
+      obj.setProperty(runtime, PropNameIDCache::get(runtime, "channelLayout"), JSIConverter<std::optional<margelo::nitro::aiimage::ChannelLayout>>::toJSI(runtime, arg.channelLayout));
+      obj.setProperty(runtime, PropNameIDCache::get(runtime, "resizeMode"), JSIConverter<std::optional<margelo::nitro::aiimage::ResizeMode>>::toJSI(runtime, arg.resizeMode));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "letterboxR"), JSIConverter<std::optional<double>>::toJSI(runtime, arg.letterboxR));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "letterboxG"), JSIConverter<std::optional<double>>::toJSI(runtime, arg.letterboxG));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "letterboxB"), JSIConverter<std::optional<double>>::toJSI(runtime, arg.letterboxB));
@@ -142,11 +142,11 @@ namespace margelo::nitro {
       }
       if (!JSIConverter<std::optional<double>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "width")))) return false;
       if (!JSIConverter<std::optional<double>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "height")))) return false;
-      if (!JSIConverter<std::optional<margelo::nitro::imagetorgb::CropRect>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "crop")))) return false;
-      if (!JSIConverter<std::optional<margelo::nitro::imagetorgb::PixelFormat>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "pixelFormat")))) return false;
-      if (!JSIConverter<std::optional<margelo::nitro::imagetorgb::DataType>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "dataType")))) return false;
-      if (!JSIConverter<std::optional<margelo::nitro::imagetorgb::ChannelLayout>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "channelLayout")))) return false;
-      if (!JSIConverter<std::optional<margelo::nitro::imagetorgb::ResizeMode>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "resizeMode")))) return false;
+      if (!JSIConverter<std::optional<margelo::nitro::aiimage::CropRect>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "crop")))) return false;
+      if (!JSIConverter<std::optional<margelo::nitro::aiimage::PixelFormat>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "pixelFormat")))) return false;
+      if (!JSIConverter<std::optional<margelo::nitro::aiimage::DataType>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "dataType")))) return false;
+      if (!JSIConverter<std::optional<margelo::nitro::aiimage::ChannelLayout>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "channelLayout")))) return false;
+      if (!JSIConverter<std::optional<margelo::nitro::aiimage::ResizeMode>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "resizeMode")))) return false;
       if (!JSIConverter<std::optional<double>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "letterboxR")))) return false;
       if (!JSIConverter<std::optional<double>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "letterboxG")))) return false;
       if (!JSIConverter<std::optional<double>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "letterboxB")))) return false;

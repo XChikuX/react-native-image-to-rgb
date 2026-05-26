@@ -8,7 +8,7 @@
 /**
  * Represents the JS union `PixelFormat`, backed by a C++ enum.
  */
-public typealias PixelFormat = margelo.nitro.imagetorgb.PixelFormat
+public typealias PixelFormat = margelo.nitro.aiimage.PixelFormat
 
 public extension PixelFormat {
   /**

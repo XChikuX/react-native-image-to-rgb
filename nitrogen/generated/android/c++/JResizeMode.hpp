@@ -10,7 +10,7 @@
 #include <fbjni/fbjni.h>
 #include "ResizeMode.hpp"
 
-namespace margelo::nitro::imagetorgb {
+namespace margelo::nitro::aiimage {
 
   using namespace facebook;
 
@@ -19,7 +19,7 @@ namespace margelo::nitro::imagetorgb {
    */
   struct JResizeMode final: public jni::JavaClass<JResizeMode> {
   public:
-    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/imagetorgb/ResizeMode;";
+    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/aiimage/ResizeMode;";
 
   public:
     /**
@@ -61,4 +61,4 @@ namespace margelo::nitro::imagetorgb {
     }
   };
 
-} // namespace margelo::nitro::imagetorgb
+} // namespace margelo::nitro::aiimage
