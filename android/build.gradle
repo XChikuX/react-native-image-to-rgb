@@ -127,6 +127,28 @@ dependencies {
   implementation project(":react-native-nitro-modules")
 }
 
+// Gradle/Prefab can otherwise configure this module's CMake target before
+// react-native-nitro-modules has produced its native Prefab package. When that
+// happens, CMake sees only Nitro's headers and the final link misses
+// libNitroModules.so, producing undefined margelo::nitro::* symbols.
+// Make our CMake configure/build tasks wait for Nitro's native + Prefab tasks.
+afterEvaluate {
+  def nitroProject = rootProject.findProject(":react-native-nitro-modules")
+  if (nitroProject != null) {
+    tasks.configureEach { task ->
+      def matcher = task.name =~ /^(configureCMake|buildCMake)([^\[]+)(\[.+\])?$/
+      if (matcher.matches()) {
+        def variantName = matcher[0][2]
+        task.dependsOn(nitroProject.tasks.matching { nitroTask ->
+          nitroTask.name == "externalNativeBuild${variantName}" ||
+            nitroTask.name == "prefab${variantName}ConfigurePackage" ||
+            nitroTask.name == "prefab${variantName}Package"
+        })
+      }
+    }
+  }
+}
+
 if (isNewArchitectureEnabled()) {
   react {
     jsRootDir = file("../src/")

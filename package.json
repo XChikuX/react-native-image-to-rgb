@@ -21,6 +21,7 @@
     "ios/**/*.mm",
     "ios/**/*.cpp",
     "cpp",
+    "scripts",
     "nitro.json",
     "*.podspec",
     "README.md",
@@ -40,7 +41,7 @@
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
-    "clean": "rm -rf android/build ios/build lib nitrogen/generated",
+    "clean": "rm -rf android/build android/.cxx ios/build lib nitrogen/generated",
     "specs": "nitrogen --logLevel=debug && node scripts/strip-swift-header-hack.js",
     "prepare": "nitrogen --logLevel=debug && node scripts/strip-swift-header-hack.js && bob build",
     "release": "release-it"
