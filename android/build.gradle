@@ -59,6 +59,25 @@ android {
         cppFlags "-frtti -fexceptions -Wall -Wextra -fstack-protector-all"
         arguments "-DANDROID_STL=c++_shared"
         abiFilters "armeabi-v7a", "x86", "x86_64", "arm64-v8a"
+
+        // Pass the nitro-modules project directory so CMake can search it
+        // even when Prefab metadata is incomplete (common in Expo/EAS builds).
+        def nitroDir = null
+        try {
+          nitroDir = project(':react-native-nitro-modules').projectDir
+        } catch (Exception ignored) {
+          // Project dependency may not be resolvable yet during configure
+          def candidate = file("${rootProject.projectDir}/../node_modules/react-native-nitro-modules/android")
+          if (!candidate.exists()) {
+            candidate = file("${projectDir}/../../react-native-nitro-modules/android")
+          }
+          if (candidate.exists()) {
+            nitroDir = candidate
+          }
+        }
+        if (nitroDir != null) {
+          arguments "-DNITRO_MODULES_DIR=${nitroDir}"
+        }
       }
     }
   }
@@ -133,7 +152,22 @@ dependencies {
 // libNitroModules.so, producing undefined margelo::nitro::* symbols.
 // Make our CMake configure/build tasks wait for Nitro's native + Prefab tasks.
 afterEvaluate {
+  // Try multiple project reference formats used across RN autolinkers
   def nitroProject = rootProject.findProject(":react-native-nitro-modules")
+  if (nitroProject == null) {
+    nitroProject = rootProject.findProject(":react-native-nitro-modules_react-native-nitro-modules")
+  }
+  if (nitroProject == null) {
+    // Expo autolinking may use a different naming scheme
+    rootProject.subprojects.find { sub ->
+      if (sub.name.contains("nitro-modules") || sub.path.contains("nitro-modules")) {
+        nitroProject = sub
+        return true
+      }
+      return false
+    }
+  }
+
   if (nitroProject != null) {
     tasks.configureEach { task ->
       def matcher = task.name =~ /^(configureCMake|buildCMake)([^\[]+)(\[.+\])?$/
@@ -144,6 +178,7 @@ afterEvaluate {
         task.dependsOn(nitroProject.tasks.matching { nitroTask ->
           nitroTask.name == "externalNativeBuild${variantName}" ||
             nitroTask.name == "buildCMake${variantName}" ||
+            nitroTask.name == "configureCMake${variantName}" ||
             nitroTask.name == "prefab${variantName}ConfigurePackage" ||
             nitroTask.name == "prefab${variantName}Package" ||
             nitroTask.name == "createPrefab${variantName}Package" ||
@@ -152,6 +187,9 @@ afterEvaluate {
         })
       }
     }
+  } else {
+    logger.warn("[NitroAiImage] Could not find react-native-nitro-modules project for task ordering. " +
+      "CMake may fail if Nitro's native build hasn't completed first.")
   }
 }
 

@@ -45,26 +45,66 @@ endif()
 if(NOT _NITRO_LINKED)
   message(STATUS "[NitroAiImage] Searching for libNitroModules.so manually...")
 
-  # Search common locations: Gradle intermediates, transform caches, and node_modules.
-  file(GLOB_RECURSE NITRO_CANDIDATES
-    "${CMAKE_SOURCE_DIR}/../../../build/**/libNitroModules.so"
-    "${CMAKE_SOURCE_DIR}/../../react-native-nitro-modules/android/.cxx/**/libNitroModules.so"
-    "${CMAKE_SOURCE_DIR}/../node_modules/react-native-nitro-modules/android/.cxx/**/libNitroModules.so"
-    "${CMAKE_SOURCE_DIR}/../../node_modules/react-native-nitro-modules/android/.cxx/**/libNitroModules.so"
-  )
+  # Try find_library first — respects CMAKE_FIND_ROOT_PATH (prefab dir) and
+  # standard CMake search mechanisms.
+  find_library(_NITRO_FIND_LIB NitroModules)
+  if(_NITRO_FIND_LIB)
+    message(STATUS "[NitroAiImage] find_library found: ${_NITRO_FIND_LIB}")
+    set(_NITRO_SO_PATH "${_NITRO_FIND_LIB}")
+  endif()
 
-  # Filter candidates to match the current ABI
-  set(_NITRO_SO_PATH "")
-  foreach(_CANDIDATE ${NITRO_CANDIDATES})
-    if(_CANDIDATE MATCHES "/${ANDROID_ABI}/")
-      set(_NITRO_SO_PATH "${_CANDIDATE}")
-      break()
+  if(NOT _NITRO_SO_PATH)
+    # Search common locations: Gradle intermediates, transform caches, prefab
+    # outputs, and node_modules.  In Expo/EAS builds the package sits at
+    # <project>/node_modules/react-native-nitro-modules and its .so may live in
+    # the .cxx, build/intermediates, or prefab output directories.
+    #
+    # CMAKE_SOURCE_DIR = <project>/node_modules/react-native-ai-image/android
+    # so ../../react-native-nitro-modules = sibling in flat node_modules.
+
+    # Determine the node_modules root (handles both flat and nested layouts)
+    get_filename_component(_NODE_MODULES_DIR "${CMAKE_SOURCE_DIR}/../.." ABSOLUTE)
+
+    # Collect search roots
+    set(_SEARCH_ROOTS
+      "${_NODE_MODULES_DIR}/react-native-nitro-modules/android"
+      "${_NODE_MODULES_DIR}/../android/app/build/intermediates"
+      "${_NODE_MODULES_DIR}/../build"
+      "${CMAKE_SOURCE_DIR}/../node_modules/react-native-nitro-modules/android"
+    )
+
+    # Use NITRO_MODULES_DIR hint from build.gradle if available
+    if(DEFINED NITRO_MODULES_DIR AND EXISTS "${NITRO_MODULES_DIR}")
+      message(STATUS "[NitroAiImage] Using NITRO_MODULES_DIR hint: ${NITRO_MODULES_DIR}")
+      list(INSERT _SEARCH_ROOTS 0 "${NITRO_MODULES_DIR}")
     endif()
-  endforeach()
 
-  # If ABI-specific not found, try any candidate
-  if(NOT _NITRO_SO_PATH AND NITRO_CANDIDATES)
-    list(GET NITRO_CANDIDATES 0 _NITRO_SO_PATH)
+    # Add CMAKE_FIND_ROOT_PATH (prefab output)
+    if(CMAKE_FIND_ROOT_PATH)
+      list(APPEND _SEARCH_ROOTS "${CMAKE_FIND_ROOT_PATH}")
+    endif()
+
+    foreach(_SEARCH_ROOT ${_SEARCH_ROOTS})
+      if(EXISTS "${_SEARCH_ROOT}")
+        file(GLOB_RECURSE _ROOT_CANDIDATES "${_SEARCH_ROOT}/libNitroModules.so")
+        if(_ROOT_CANDIDATES)
+          list(APPEND NITRO_CANDIDATES ${_ROOT_CANDIDATES})
+        endif()
+      endif()
+    endforeach()
+    # Filter candidates to match the current ABI
+    set(_NITRO_SO_PATH "")
+    foreach(_CANDIDATE ${NITRO_CANDIDATES})
+      if(_CANDIDATE MATCHES "/${ANDROID_ABI}/")
+        set(_NITRO_SO_PATH "${_CANDIDATE}")
+        break()
+      endif()
+    endforeach()
+
+    # If ABI-specific not found, try any candidate
+    if(NOT _NITRO_SO_PATH AND NITRO_CANDIDATES)
+      list(GET NITRO_CANDIDATES 0 _NITRO_SO_PATH)
+    endif()
   endif()
 
   if(_NITRO_SO_PATH)
