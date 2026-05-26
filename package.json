@@ -1,6 +1,6 @@
 {
   "name": "react-native-ai-image",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "description": "AI-ready image preprocessing for React Native: zero-copy image → tensor conversion with strong YOLO/TFLite defaults.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
