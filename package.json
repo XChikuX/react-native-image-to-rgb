@@ -41,8 +41,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "rm -rf android/build ios/build lib nitrogen/generated",
-    "specs": "nitrogen --logLevel=debug && node -e \"var fs=require('fs'); var f='nitrogen/generated/ios/NitroAiImage+autolinking.rb'; var c=fs.readFileSync(f,'utf8'); c=c.replace(/^.*SWIFT_INSTALL_OBJC_HEADER.*NO.*\n/gm,''); fs.writeFileSync(f,c);\"",
-    "prepare": "nitrogen --logLevel=debug && bob build && node -e \"var fs=require('fs'); var f='nitrogen/generated/ios/NitroAiImage+autolinking.rb'; var c=fs.readFileSync(f,'utf8'); c=c.replace(/^.*SWIFT_INSTALL_OBJC_HEADER.*NO.*\n/gm,''); fs.writeFileSync(f,c);\"",
+    "specs": "nitrogen --logLevel=debug && node scripts/strip-swift-header-hack.js",
+    "prepare": "nitrogen --logLevel=debug && node scripts/strip-swift-header-hack.js && bob build",
     "release": "release-it"
   },
   "keywords": [
