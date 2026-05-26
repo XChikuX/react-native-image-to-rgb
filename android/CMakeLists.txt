@@ -19,6 +19,7 @@ include(${CMAKE_SOURCE_DIR}/../nitrogen/generated/android/NitroAiImage+autolinki
 # library if the imported target has no binary location attached.
 function(aiimage_link_prefab_fallback package_target shared_lib_name)
   if(NOT TARGET ${package_target})
+    message(STATUS "[NitroAiImage] Target ${package_target} does not exist, skipping fallback")
     return()
   endif()
 
@@ -26,7 +27,12 @@ function(aiimage_link_prefab_fallback package_target shared_lib_name)
   get_target_property(_imported_location_debug ${package_target} IMPORTED_LOCATION_DEBUG)
   get_target_property(_imported_location_release ${package_target} IMPORTED_LOCATION_RELEASE)
 
+  message(STATUS "[NitroAiImage] Prefab target ${package_target} imported location: ${_imported_location}")
+  message(STATUS "[NitroAiImage] Prefab target ${package_target} imported location debug: ${_imported_location_debug}")
+  message(STATUS "[NitroAiImage] Prefab target ${package_target} imported location release: ${_imported_location_release}")
+
   if(_imported_location OR _imported_location_debug OR _imported_location_release)
+    message(STATUS "[NitroAiImage] Prefab target ${package_target} has explicit location, no fallback needed")
     return()
   endif()
 
@@ -35,6 +41,18 @@ function(aiimage_link_prefab_fallback package_target shared_lib_name)
     if(EXISTS "${_root}")
       file(GLOB_RECURSE _matches LIST_DIRECTORIES false "${_root}/lib${shared_lib_name}.so")
       list(APPEND _candidate_paths ${_matches})
+    endif()
+  endforeach()
+
+  # Also search node_modules directly - CMAKE_FIND_ROOT_PATH may not include it in EAS builds
+  set(_nm_search_paths
+    "${CMAKE_SOURCE_DIR}/../node_modules"
+    "${CMAKE_SOURCE_DIR}/../../node_modules"
+  )
+  foreach(_nm_root ${_nm_search_paths})
+    if(EXISTS "${_nm_root}")
+      file(GLOB_RECURSE _nm_matches LIST_DIRECTORIES false "${_nm_root}/react-native-nitro-modules/**/lib${shared_lib_name}.so")
+      list(APPEND _candidate_paths ${_nm_matches})
     endif()
   endforeach()
 
