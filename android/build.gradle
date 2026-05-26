@@ -57,27 +57,8 @@ android {
     externalNativeBuild {
       cmake {
         cppFlags "-frtti -fexceptions -Wall -Wextra -fstack-protector-all"
-        arguments "-DANDROID_STL=c++_shared"
+        arguments "-DANDROID_STL=c++_shared", "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON"
         abiFilters "armeabi-v7a", "x86", "x86_64", "arm64-v8a"
-
-        // Pass the nitro-modules project directory so CMake can search it
-        // even when Prefab metadata is incomplete (common in Expo/EAS builds).
-        def nitroDir = null
-        try {
-          nitroDir = project(':react-native-nitro-modules').projectDir
-        } catch (Exception ignored) {
-          // Project dependency may not be resolvable yet during configure
-          def candidate = file("${rootProject.projectDir}/../node_modules/react-native-nitro-modules/android")
-          if (!candidate.exists()) {
-            candidate = file("${projectDir}/../../react-native-nitro-modules/android")
-          }
-          if (candidate.exists()) {
-            nitroDir = candidate
-          }
-        }
-        if (nitroDir != null) {
-          arguments "-DNITRO_MODULES_DIR=${nitroDir}"
-        }
       }
     }
   }
@@ -97,11 +78,21 @@ android {
     excludes = [
       "META-INF",
       "META-INF/**",
+      "**/libNitroModules.so",
       "**/libc++_shared.so",
       "**/libfbjni.so",
       "**/libjsi.so",
+      "**/libfolly_json.so",
+      "**/libfolly_runtime.so",
+      "**/libglog.so",
+      "**/libhermes.so",
+      "**/libhermes-executor-debug.so",
+      "**/libhermes_executor.so",
       "**/libreactnative.so",
       "**/libreactnativejni.so",
+      "**/libturbomodulejsijni.so",
+      "**/libreact_nativemodule_core.so",
+      "**/libjscexecutor.so",
     ]
   }
 
@@ -146,52 +137,7 @@ dependencies {
   implementation project(":react-native-nitro-modules")
 }
 
-// Gradle/Prefab can otherwise configure this module's CMake target before
-// react-native-nitro-modules has produced its native Prefab package. When that
-// happens, CMake sees only Nitro's headers and the final link misses
-// libNitroModules.so, producing undefined margelo::nitro::* symbols.
-// Make our CMake configure/build tasks wait for Nitro's native + Prefab tasks.
-afterEvaluate {
-  // Try multiple project reference formats used across RN autolinkers
-  def nitroProject = rootProject.findProject(":react-native-nitro-modules")
-  if (nitroProject == null) {
-    nitroProject = rootProject.findProject(":react-native-nitro-modules_react-native-nitro-modules")
-  }
-  if (nitroProject == null) {
-    // Expo autolinking may use a different naming scheme
-    rootProject.subprojects.find { sub ->
-      if (sub.name.contains("nitro-modules") || sub.path.contains("nitro-modules")) {
-        nitroProject = sub
-        return true
-      }
-      return false
-    }
-  }
 
-  if (nitroProject != null) {
-    tasks.configureEach { task ->
-      def matcher = task.name =~ /^(configureCMake|buildCMake)([^\[]+)(\[.+\])?$/
-      if (matcher.matches()) {
-        def variantName = matcher[0][2]
-        // Depend on Nitro's native build and prefab packaging tasks.
-        // Match multiple naming conventions across AGP versions (7.x, 8.x+).
-        task.dependsOn(nitroProject.tasks.matching { nitroTask ->
-          nitroTask.name == "externalNativeBuild${variantName}" ||
-            nitroTask.name == "buildCMake${variantName}" ||
-            nitroTask.name == "configureCMake${variantName}" ||
-            nitroTask.name == "prefab${variantName}ConfigurePackage" ||
-            nitroTask.name == "prefab${variantName}Package" ||
-            nitroTask.name == "createPrefab${variantName}Package" ||
-            nitroTask.name == "merge${variantName}NativeLibs" ||
-            nitroTask.name == "copy${variantName}JniLibsProjectOnly"
-        })
-      }
-    }
-  } else {
-    logger.warn("[NitroAiImage] Could not find react-native-nitro-modules project for task ordering. " +
-      "CMake may fail if Nitro's native build hasn't completed first.")
-  }
-}
 
 if (isNewArchitectureEnabled()) {
   react {

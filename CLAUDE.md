@@ -140,21 +140,7 @@ Xcode workspace is still named `ImageToRgbExample` (legacy).
    exports in `src/`, run `bun run prepare` before publishing or consumers
    will see `undefined` imports.
 
-6. **Android: `libNitroModules.so` not linked in Expo/EAS builds.** In some
-   Expo + Prefab configurations, CMake's `find_package(react-native-nitro-modules)`
-   discovers the Prefab target (so headers resolve) but the target has no
-   backing `.so` at link time. This causes `undefined symbol:
-   margelo::nitro::JHybridObject` linker errors for all ABIs.
-
-   **Handled in `android/CMakeLists.txt`**: the build verifies that the Prefab
-   target's `IMPORTED_LOCATION` actually exists on disk before relying on it.
-   If it doesn't, it falls back to an ABI-aware `file(GLOB_RECURSE)` search
-   for `libNitroModules.so` in Gradle intermediates and node_modules. The
-   `afterEvaluate` block in `build.gradle` also forces task ordering so that
-   react-native-nitro-modules' native build completes before our CMake
-   configure/link steps run.
-
-7. **Package manager is Bun.** The `packageManager` field in `package.json` is
+6. **Package manager is Bun.** The `packageManager` field in `package.json` is
    `bun@1.3.14`. Do not replace bun-based workflows with npm or Yarn.
 
 ## When in doubt
@@ -163,5 +149,8 @@ Xcode workspace is still named `ImageToRgbExample` (legacy).
 - Don't introduce new dependencies; this library is intentionally tiny.
 - Don't touch `example/ios/Pods/`, `example/ios/Podfile.lock`, or anything under `nitrogen/generated/` *other than* the documented iOS workaround.
 - Native behavior changes need to be implemented twice — once in Swift and once in Kotlin — and the spec in `src/specs/AiImage.nitro.ts` is the contract for both.
-- If you change `android/CMakeLists.txt`, test that the Prefab-target path **and** the manual-fallback path both remain valid (see footgun #6).
+If you change `android/CMakeLists.txt`, keep it minimal — the Nitrogen
+autolinking CMake handles all NitroModules linking via
+`find_package(react-native-nitro-modules REQUIRED)`. Do not add custom
+fallback linking logic. See reference implementations for the pattern.
 - Use `bun` (not npm/yarn) for all package management and script execution.
