@@ -72,18 +72,18 @@ if(NOT _NITRO_LINKED)
     message(STATUS "  ${_NITRO_SO_PATH}")
 
     # Create an imported target so we get proper linker handling
-    add_library(NitroModules_fallback SHARED IMPORTED)
-    set_target_properties(NitroModules_fallback PROPERTIES IMPORTED_LOCATION "${_NITRO_SO_PATH}")
+    add_library(NitroAiImage_NitroModules_fallback SHARED IMPORTED)
+    set_target_properties(NitroAiImage_NitroModules_fallback PROPERTIES IMPORTED_LOCATION "${_NITRO_SO_PATH}")
 
     # Carry over include directories from the prefab target if available
     if(TARGET react-native-nitro-modules::NitroModules)
       get_target_property(_NITRO_INCLUDES react-native-nitro-modules::NitroModules INTERFACE_INCLUDE_DIRECTORIES)
       if(_NITRO_INCLUDES)
-        set_target_properties(NitroModules_fallback PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${_NITRO_INCLUDES}")
+        set_target_properties(NitroAiImage_NitroModules_fallback PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${_NITRO_INCLUDES}")
       endif()
     endif()
 
-    target_link_libraries(${PACKAGE_NAME} NitroModules_fallback)
+    target_link_libraries(${PACKAGE_NAME} NitroAiImage_NitroModules_fallback)
   else()
     message(FATAL_ERROR
       "[NitroAiImage] Could not locate react-native-nitro-modules native library (libNitroModules.so). "
