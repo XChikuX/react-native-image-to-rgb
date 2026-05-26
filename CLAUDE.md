@@ -108,8 +108,9 @@ as legacy until it's bumped to match the library's RN 0.76.x target.
    `HybridAiImageSpec_cxx` / `Func_void_ConvertResult` / `NitroAiImageAutolinking`
    "incomplete type" / "not a class" errors.
 
-   **Workaround:** delete that one line after every `bun run specs`. A note
-   in the file explains why.
+   **This is handled automatically.** Both `bun run specs` and `bun run prepare`
+   run a `node` one-liner that strips the offending line immediately after
+   nitrogen regenerates the file. You do not need to hand-edit anything.
 
 2. **Pod name == Swift module name == `ios.iosModuleName`.** The C++ side
    imports `NitroAiImage-Swift.h` and references the `NitroAiImage::`
