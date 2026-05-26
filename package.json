@@ -1,6 +1,6 @@
 {
   "name": "react-native-ai-image",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "AI-ready image preprocessing for React Native: zero-copy image → tensor conversion with strong YOLO/TFLite defaults.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -155,7 +155,8 @@
       [
         "typescript",
         {
-          "project": "tsconfig.build.json"
+          "project": "tsconfig.build.json",
+          "tsc": "./node_modules/typescript/bin/tsc"
         }
       ]
     ]
