@@ -139,10 +139,16 @@ afterEvaluate {
       def matcher = task.name =~ /^(configureCMake|buildCMake)([^\[]+)(\[.+\])?$/
       if (matcher.matches()) {
         def variantName = matcher[0][2]
+        // Depend on Nitro's native build and prefab packaging tasks.
+        // Match multiple naming conventions across AGP versions (7.x, 8.x+).
         task.dependsOn(nitroProject.tasks.matching { nitroTask ->
           nitroTask.name == "externalNativeBuild${variantName}" ||
+            nitroTask.name == "buildCMake${variantName}" ||
             nitroTask.name == "prefab${variantName}ConfigurePackage" ||
-            nitroTask.name == "prefab${variantName}Package"
+            nitroTask.name == "prefab${variantName}Package" ||
+            nitroTask.name == "createPrefab${variantName}Package" ||
+            nitroTask.name == "merge${variantName}NativeLibs" ||
+            nitroTask.name == "copy${variantName}JniLibsProjectOnly"
         })
       }
     }
